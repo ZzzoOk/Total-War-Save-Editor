@@ -41,9 +41,17 @@ namespace EsfSaveEditorControls
                     }
                 }
             }
-            public virtual string getValue(string type)
+            public string getValue(string type)
             {
-                var valueNode = getValueNode(getSaveTableSignature()[type]);
+                var path = getSaveTableSignature()[type];
+                if (path.ToString().Contains(GameInfo.setting_static_field_string))
+                {
+                    Type game_type = GameInfo.setting.GetType();
+                    path = game_type.GetProperty((path as string)
+                        .Replace(GameInfo.setting_static_field_string, ""))
+                        .GetValue(GameInfo.setting);
+                }
+                var valueNode = getValueNode(path);
                 string result = processValue(get, type, valueNode.ToString());
                 return result;
             }
@@ -166,8 +174,8 @@ namespace EsfSaveEditorControls
         public class Character : BaseGameItem
         {
             internal static readonly Dictionary<string, object> characterSignatures = new Dictionary<string, object>(){
-                { GameInfo.save_item_age, @"DATE\0" }, { GameInfo.save_item_cclass, GameInfo.setting.character_class_path },
-                { GameInfo.save_item_gender, GameInfo.setting.character_gender },
+                { GameInfo.save_item_age, @"2\0" }, { GameInfo.save_item_cclass, "GameInfo.setting.character_class_path" },
+                { GameInfo.save_item_gender, "GameInfo.setting.character_gender" },
                 { GameInfo.save_item_background, GameInfo.characterlevelpath + @"\0" },
                 { GameInfo.save_item_skill_point, GameInfo.characterlevelpath + @"\5" },
                 { GameInfo.save_item_level, GameInfo.characterlevelpath + @"\4" }, 
@@ -323,8 +331,8 @@ namespace EsfSaveEditorControls
                 { GameInfo.save_item_skill_point, GameInfo.armylevelpath + @"\5" },
                 { GameInfo.save_item_level, GameInfo.armylevelpath + @"\4" }, 
                 { GameInfo.save_item_exp, GameInfo.armylevelpath + @"\6" },
-                { GameInfo.save_item_cclass, GameInfo.setting.army_class }, 
-                { "index", GameInfo.setting.army_index }
+                { GameInfo.save_item_cclass, "GameInfo.setting.army_class" }, 
+                { "index", "GameInfo.setting.army_index" }
             };
             public BaseGameItemCollection skills { get; set; }
             public BaseGameItemCollection units { get; set; }
@@ -376,8 +384,8 @@ namespace EsfSaveEditorControls
         public class Unit : Ancillary
         {
             static readonly Dictionary<string, object> armyUnitSignatures = new Dictionary<string, object>(){
-                { GameInfo.save_item_key, @"0\0\0" }, { GameInfo.save_item_size, @"0\2" }
-                , { GameInfo.save_item_max_size, @"0\1" }, { GameInfo.save_item_max_action, @"0\3" }
+                { GameInfo.save_item_key, @"0\0\0" }, { GameInfo.save_item_size, @"0\1" }
+                , { GameInfo.save_item_max_size, @"0\2" }, { GameInfo.save_item_max_action, @"0\3" }
                 , { GameInfo.save_item_action, @"0\8" }
             };
             public Unit(EsfLibrary.ParentNode node) : base(node) { }

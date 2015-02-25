@@ -267,6 +267,8 @@ namespace EditSFCharacters {
         }
         async void switchGame(string gameid)
         {
+            string oldid = Properties.Settings.Default.gameid;
+            Properties.Settings.Default.gameid = gameid;
             fileToolStripMenuItem.Enabled = false;
             chooseDatapackToLoadToolStripMenuItem.Enabled = false;
             chooseLocDatabaseToLoadToolStripMenuItem.Enabled = false;
@@ -282,13 +284,13 @@ namespace EditSFCharacters {
                     fileToolStripMenuItem.Enabled = true;
                     chooseDatapackToLoadToolStripMenuItem.Enabled = true;
                     chooseLocDatabaseToLoadToolStripMenuItem.Enabled = true;
-                    Properties.Settings.Default.gameid = gameid;
                     Properties.Settings.Default.Save();
                     foreach (ToolStripMenuItem menuitem in gameToolStripMenuItem.DropDownItems)
                         menuitem.Checked = gameid.Equals(menuitem.Tag.ToString());
                     return;
                 }
             }
+            Properties.Settings.Default.gameid = oldid;
         }
     }
 

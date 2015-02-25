@@ -67,13 +67,15 @@ namespace EsfSaveEditorControls
         public const string save_item_max_size = "max_size";
         public const string save_item_action = "action";
         public const string save_item_max_action = "max_action";
+        public const string setting_static_field_string = "GameInfo.setting.";
         public static readonly List<string> dataPacks = new List<string>();
         public static readonly List<string> locDataPacks = new List<string>();
 
         public static void SetGame(string gameid)
         {
             var type = Type.GetType("EsfSaveEditorControls." + gameid);
-            setting = type.GetProperty("Default").GetValue(setting);
+            setting = type.GetProperty("Default").GetValue(null);
+            GameData.Invalidate();
         }
         public static void LoadDataPacks()
         {
@@ -118,6 +120,18 @@ namespace EsfSaveEditorControls
             if (number >= 4) return "IV" + ToRoman(number - 4);
             if (number >= 1) return "I" + ToRoman(number - 1);
             throw new ArgumentOutOfRangeException("something bad happened");
+        }
+        public static object FollowPropertyPath(object value, string path)
+        {
+            Type currentType = value.GetType();
+
+            foreach (string propertyName in path.Split('.'))
+            {
+                var property = currentType.GetProperty(propertyName);
+                value = property.GetValue(value, null);
+                currentType = property.PropertyType;
+            }
+            return value;
         }
         public static EsfTabControl.BaseGameItemCollection getItemCollection(object item, string property)
         {
