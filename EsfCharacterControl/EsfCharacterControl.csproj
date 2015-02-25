@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AD415480-8879-4271-B8A6-CB7391DEA78C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EsfSaveEditorControls</RootNamespace>
+    <AssemblyName>EsfCharacterControl</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AncillaryEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AncillaryEditor.Designer.cs">
+      <DependentUpon>AncillaryEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ATW.Designer.cs">
+      <DependentUpon>ATW.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="EsfTabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EsfTabPage.Designer.cs">
+      <DependentUpon>EsfTabPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EsfTabPageArmy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EsfTabPageArmy.Designer.cs">
+      <DependentUpon>EsfTabPageArmy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EsfTabPageCharacter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EsfTabPageCharacter.Designer.cs">
+      <DependentUpon>EsfTabPageCharacter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EsfTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EsfTabControl.Designer.cs">
+      <DependentUpon>EsfTabControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GameInfo.cs" />
+    <Compile Include="MathsEvaluator.cs" />
+    <Compile Include="NumericTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NumericTextBox.designer.cs">
+      <DependentUpon>NumericTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PackFilePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PackFilePicker.Designer.cs">
+      <DependentUpon>PackFilePicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgressReporter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GameData.cs" />
+    <Compile Include="R2TW.Designer.cs">
+      <DependentUpon>R2TW.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="TraitEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TraitEditor.Designer.cs">
+      <DependentUpon>TraitEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserSortableListbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{6d23f5fb-04d4-4d7e-bdff-fca718309298}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EsfLibrary\EsfLibrary.csproj">
+      <Project>{A290E27B-4B04-4851-A17D-D0F6AEE533A2}</Project>
+      <Name>EsfLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonDialogs\CommonDialogs.csproj">
+      <Project>{1B2FA4F4-C320-496F-9365-636D9180BE03}</Project>
+      <Name>CommonDialogs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Filetypes\Filetypes.csproj">
+      <Project>{2419c2af-48a3-40d2-980b-36ab2d81dc74}</Project>
+      <Name>Filetypes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AncillaryEditor.resx">
+      <DependentUpon>AncillaryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EsfTabPage.resx">
+      <DependentUpon>EsfTabPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EsfTabPageCharacter.resx">
+      <DependentUpon>EsfTabPageCharacter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EsfTabControl.resx">
+      <DependentUpon>EsfTabControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PackFilePicker.resx">
+      <DependentUpon>PackFilePicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TraitEditor.resx">
+      <DependentUpon>TraitEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ATW.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>ATW.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="R2TW.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>R2TW.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
