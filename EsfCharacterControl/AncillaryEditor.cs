@@ -136,8 +136,8 @@ namespace EsfSaveEditorControls
             else
                 comboBoxAvailableItems.DataSource = bindingList.Where(x =>
                     avaliable_traits_filter_strings.All(filter => filter.Contains(
-                        (x.Value as GameData.ArmyUnit).isNavy ? 
-                        GameInfo.item_characters[4] : GameInfo.item_characters[5]))).ToList();
+                        (x.Value as GameData.ArmyUnit).isNavy ?
+                        "navy" : "army"))).ToList();
             comboBoxAvailableItems.DisplayMember = "Key";
         }
         protected override Dictionary<string, string> getSaveBundle()

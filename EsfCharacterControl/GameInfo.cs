@@ -20,21 +20,19 @@ namespace EsfSaveEditorControls
         public const string characterskillpath = @"CAMPAIGN_SKILLS\CAMPAIGN_SKILLS_BLOCK";
         public const string characterancillarypath = @"ANCILLARY";
         public const string armyarraypath = @"ARMY_ARRAY";
-        public const string armydetailpath = @"MILITARY_FORCE_LEGACY";
         public const string armylevelpath = @"MILITARY_FORCE_LEGACY\CAMPAIGN_SKILLS";
         public const string armyunitpath = @"UNIT_CONTAINER\UNITS_ARRAY";
         public const string packpath = "data";
         public const string locpath = @"text\db";
         public const string dbPath = "db";
-        public const string tablepath_traitlevels = "character_trait_levels_tables";
-        public const string tablepath_characterskills = "character_skills_tables";
-        public const string tablepath_main_units = "main_units_tables";
-        public const string tablepath_land_units = "land_units_tables";
-        public const string characterskillnodepath = "character_skill_nodes_tables";
-        public const string traitleveleffectstablepath = "trait_level_effects_tables";
-        public const string characterskilleveleffectpath = "character_skill_level_to_effects_junctions_tables";
-        public const string anceffectpath = "ancillary_to_effects_tables";
-        public const string tablepath_units = "main_units_tables";
+        public const string character_trait_levels_tables = "character_trait_levels_tables";
+        public const string character_skills_tables = "character_skills_tables";
+        public const string main_units_tables = "main_units_tables";
+        public const string land_units_tables = "land_units_tables";
+        public const string character_skill_nodes_tables = "character_skill_nodes_tables";
+        public const string trait_level_effects_tables = "trait_level_effects_tables";
+        public const string character_skill_level_to_effects_junctions_tables = "character_skill_level_to_effects_junctions_tables";
+        public const string ancillary_to_effects_tables = "ancillary_to_effects_tables";
         public const string schema_R2TW = "maxVersions_R2TW.xml";
         public const string schema_ATW = "maxVersions_ATW.xml";
         public const string traitkeytextremove = "character_trait_levels_colour_text_";
@@ -55,6 +53,7 @@ namespace EsfSaveEditorControls
         public const string locnameeffectscope = "campaign_effect_scopes_localised_text_";
         public const string escape_character_positive_value = @"%+n";
         public const string save_item_cclass = "cclass";
+        public const string save_item_gender = "gender";
         public const string save_item_background = "background";
         public const string save_item_skill_point = "skill_point";
         public const string save_item_level = "level";
@@ -70,8 +69,6 @@ namespace EsfSaveEditorControls
         public const string save_item_max_action = "max_action";
         public static readonly List<string> dataPacks = new List<string>();
         public static readonly List<string> locDataPacks = new List<string>();
-        public static readonly List<string> item_characters = new List<string>(){
-         "general", "spy", "dignitary", "champion", "army", "navy" };
 
         public static void SetGame(string gameid)
         {

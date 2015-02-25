@@ -209,7 +209,8 @@ namespace EsfSaveEditorControls
             {
                 get
                 {
-                    --rank;
+                    if (rank > 0)
+                        --rank;
                     lock(list)
                     while (list.Count <= rank)
                     {
@@ -452,7 +453,7 @@ namespace EsfSaveEditorControls
             public override void Initialise(params VirtualDirectory[] db)
             {
 
-                DBFile[] anceffecttables = EsfLibraryExtension.getDBFiles(GameInfo.anceffectpath, db);
+                DBFile[] anceffecttables = EsfLibraryExtension.getDBFiles(GameInfo.ancillary_to_effects_tables, db);
                 foreach (var anceffecttable in anceffecttables)
                     Parallel.ForEach(anceffecttable.Entries, anceffect =>
                     {
@@ -481,7 +482,7 @@ namespace EsfSaveEditorControls
             {
 
                 Task[] tasks = new Task[2];
-                DBFile[] characterskilltables = EsfLibraryExtension.getDBFiles(GameInfo.tablepath_characterskills, db);
+                DBFile[] characterskilltables = EsfLibraryExtension.getDBFiles(GameInfo.character_skills_tables, db);
                 foreach (var characterskilltable in characterskilltables)
                     foreach(var skill_entry in characterskilltable.Entries)
                     {
@@ -492,7 +493,7 @@ namespace EsfSaveEditorControls
                     }
                 tasks[0] = Task.Factory.StartNew(delegate
                 {
-                    DBFile[] characterskillnodetables = EsfLibraryExtension.getDBFiles(GameInfo.characterskillnodepath, db);//3 factions, 7 subcultures
+                    DBFile[] characterskillnodetables = EsfLibraryExtension.getDBFiles(GameInfo.character_skill_nodes_tables, db);//3 factions, 7 subcultures
                     foreach (var characterskillnodetable in characterskillnodetables)
                         Parallel.ForEach(characterskillnodetable.Entries, characterskillnode =>
                         {
@@ -509,13 +510,13 @@ namespace EsfSaveEditorControls
                             catch
                             {
                                 Console.WriteLine("Cannot find skill " + id + " in " +
-                                  GameInfo.characterskillnodepath);
+                                  GameInfo.character_skill_nodes_tables);
                             }
                         });
                 });
                 tasks[1] = Task.Factory.StartNew(delegate
                 {
-                    DBFile[] characterskilleffecttables = EsfLibraryExtension.getDBFiles(GameInfo.characterskilleveleffectpath, db);
+                    DBFile[] characterskilleffecttables = EsfLibraryExtension.getDBFiles(GameInfo.character_skill_level_to_effects_junctions_tables, db);
                     foreach (var characterskilleffecttable in characterskilleffecttables)
                         Parallel.ForEach(characterskilleffecttable.Entries, characterskilleffect =>
                         {
@@ -533,7 +534,7 @@ namespace EsfSaveEditorControls
                             catch
                             {
                                 Console.WriteLine("Cannot find skill " + id + " in " +
-                                  GameInfo.characterskilleveleffectpath);
+                                  GameInfo.character_skill_level_to_effects_junctions_tables);
                             }
                         });
                 });
@@ -544,8 +545,8 @@ namespace EsfSaveEditorControls
         {
             public override void Initialise(params VirtualDirectory[] db)
             {
-                DBFile[] traitleveleffectstables = EsfLibraryExtension.getDBFiles(GameInfo.traitleveleffectstablepath, db);
-                DBFile[] traitleveltables = EsfLibraryExtension.getDBFiles(GameInfo.tablepath_traitlevels, db);
+                DBFile[] traitleveleffectstables = EsfLibraryExtension.getDBFiles(GameInfo.trait_level_effects_tables, db);
+                DBFile[] traitleveltables = EsfLibraryExtension.getDBFiles(GameInfo.character_trait_levels_tables, db);
                 int effectCount = 0;
                 foreach (var traitleveleffectstable in traitleveleffectstables)
                 {
@@ -658,22 +659,22 @@ namespace EsfSaveEditorControls
                         values.Add(land_unit["reload"].Value);
                     }
                     land_units.Add(landUnit, values);
-                }, GameInfo.tablepath_land_units, db);
+                }, GameInfo.land_units_tables, db);
                 iterateDBs(main_unit =>
                 {
                     string key = main_unit["unit"].Value;
                     string landUnit = main_unit["land_unit"].Value;
-                    bool isNavel = main_unit["is_naval"].Value.Equals(false.ToString());
+                    bool isNaval = main_unit["is_naval"].Value.Equals(true.ToString());
                     string size = main_unit["num_men"].Value;
 
-                    var armyUnit = new ArmyUnit() { isNavy = isNavel, armySize = size };
+                    var armyUnit = new ArmyUnit() { isNavy = isNaval, armySize = size };
                     armyUnit.name = (key);
                     List<object> stats;
                     bool found = land_units.TryGetValue(landUnit, out stats);
                     if (found)
                         armyUnit.values = stats;
                     this.Add(key, armyUnit);
-                }, GameInfo.tablepath_main_units, db);
+                }, GameInfo.main_units_tables, db);
             }
         }
         #endregion

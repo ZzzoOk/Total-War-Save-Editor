@@ -20,7 +20,8 @@ namespace EsfSaveEditorControls
             this.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
 
-            comboBoxFilter.Items.AddRange(new object[] { "general", "spy", "champion", "dignitary" });
+            System.Collections.Specialized.StringCollection sc = GameInfo.setting.character_filter;
+            comboBoxFilter.Items.AddRange(sc.Cast<string>().ToArray());
 
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());

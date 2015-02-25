@@ -82,15 +82,65 @@ namespace EsfSaveEditorControls {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9")]
         public int character_class_path {
             get {
                 return ((int)(this["character_class_path"]));
             }
-            set {
-                this["character_class_path"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>general</string>
+  <string>spy</string>
+  <string>champion</string>
+  <string>dignitary</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection character_filter {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["character_filter"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int character_gender {
+            get {
+                return ((int)(this["character_gender"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MILITARY_FORCE_LEGACY\\0")]
+        public string army_class {
+            get {
+                return ((string)(this["army_class"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>army</string>\r\n  <string>navy</string>\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection army_filter {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["army_filter"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MILITARY_FORCE_LEGACY\\2")]
+        public string army_index {
+            get {
+                return ((string)(this["army_index"]));
             }
         }
     }

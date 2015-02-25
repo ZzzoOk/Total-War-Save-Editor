@@ -93,12 +93,19 @@ namespace EsfSaveEditorControls
         }
         public virtual void addFilter(string filter)
         {
-            if (bindingList != null)
-                comboBoxItems.DataSource = bindingList.Where(x =>
-                    ((EsfTabControl.BaseGameItem)x).getValue(GameInfo.save_item_cclass) == 
-                    comboBoxFilter.Text.ToLower()).ToList();
+            if (bindingList != null){
+                var filtered_list = bindingList.Where(x => temp_compare(x)).ToList();
+                comboBoxItems.DataSource = filtered_list;
+            }
             else
                 comboBoxItems.DataSource = null;
+        }
+        bool temp_compare(EsfTabControl.BaseGameItem x)
+        {
+            var cclass = x.getValue(GameInfo.save_item_cclass);
+            var filter_text = comboBoxFilter.Text.ToLower();
+            var result = cclass == filter_text;
+            return result;
         }
         public virtual void clearFilter()
         {

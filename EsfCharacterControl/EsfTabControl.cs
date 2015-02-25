@@ -133,8 +133,15 @@ namespace EsfSaveEditorControls
         {
             public static readonly int name = 1;
             public Faction(EsfLibrary.ParentNode node) : base(node) {
-                obtainfactioncharacters(); 
-                obtainfactionarmies();
+                try
+                {
+                    obtainfactioncharacters();
+                    obtainfactionarmies();
+                }
+                catch
+                {
+                    Console.WriteLine("faction creation fail at " + node.Values[name]);
+                }
             }
             public override string ToString()
             {
@@ -159,7 +166,8 @@ namespace EsfSaveEditorControls
         public class Character : BaseGameItem
         {
             internal static readonly Dictionary<string, object> characterSignatures = new Dictionary<string, object>(){
-                { GameInfo.save_item_age, @"DATE\0" }, { GameInfo.save_item_cclass, 9 },
+                { GameInfo.save_item_age, @"DATE\0" }, { GameInfo.save_item_cclass, GameInfo.setting.character_class_path },
+                { GameInfo.save_item_gender, GameInfo.setting.character_gender },
                 { GameInfo.save_item_background, GameInfo.characterlevelpath + @"\0" },
                 { GameInfo.save_item_skill_point, GameInfo.characterlevelpath + @"\5" },
                 { GameInfo.save_item_level, GameInfo.characterlevelpath + @"\4" }, 
@@ -202,14 +210,19 @@ namespace EsfSaveEditorControls
             {
                 switch (type)
                 {
+                    case GameInfo.save_item_cclass:
+                        if (value == "general")
+                            return getValue(GameInfo.save_item_gender).Equals("True") ? value : "wife";
+                        break;
                     case GameInfo.save_item_age:
                         if (set)
                             return (gameYear - int.Parse(value)).ToString();
                         else
                             return (gameYear - int.Parse(value)).ToString();
                     default:
-                        return value;
+                        break;
                 }
+                return value;
             }
             public override void save(Dictionary<string, string> bundle)
             {
@@ -265,15 +278,19 @@ namespace EsfSaveEditorControls
             public Skill(EsfLibrary.ParentNode node) : base(node) { }
             protected override GameData.GenericGameItem getItem()
             {
-                return (GameData.GetInstance().Skills[getKey()] as GameData.Skill)[getRank()];
+                return getBaseItem()[getRank()];
             }
             protected override Dictionary<string, object> getSaveTableSignature()
             {
                 return Skill.skillSignatures;
             }
+            GameData.Skill getBaseItem()
+            {
+                return (GameData.GetInstance().Skills[getKey()] as GameData.Skill);
+            }
             public bool isBackground()
             {
-                return ((GameData.Skill)getItem()).background;
+                return getBaseItem().background;
             }
         }
         public class Ancillary : BaseGameItem
@@ -306,7 +323,8 @@ namespace EsfSaveEditorControls
                 { GameInfo.save_item_skill_point, GameInfo.armylevelpath + @"\5" },
                 { GameInfo.save_item_level, GameInfo.armylevelpath + @"\4" }, 
                 { GameInfo.save_item_exp, GameInfo.armylevelpath + @"\6" },
-                { GameInfo.save_item_cclass, GameInfo.armydetailpath + @"\0" }, { "index", GameInfo.armydetailpath + @"\2" }
+                { GameInfo.save_item_cclass, GameInfo.setting.army_class }, 
+                { "index", GameInfo.setting.army_index }
             };
             public BaseGameItemCollection skills { get; set; }
             public BaseGameItemCollection units { get; set; }
@@ -322,16 +340,23 @@ namespace EsfSaveEditorControls
                 return int.Parse(getValue("index"));
             }
             public override string ToString()
-            {
-                string campaign_localisation = node.Children[0].Children[1].Values[0].ToString();
-                    if (campaign_localisation.Contains("roman"))
-                    {
-                        string armytype = getValue(GameInfo.save_item_cclass).Equals("army") ? "Legio" : "Classis";
-                        string romanindex = GameInfo.ToRoman(getIndex());
-                        campaign_localisation = GameData.GetInstance().DictionaryArmyRomanRegion[campaign_localisation];
-                        campaign_localisation = String.Format("{0} {1} {2}", armytype, romanindex, campaign_localisation);
-                    }
-                return campaign_localisation;
+            { 
+                string gameid = GameInfo.setting.GetType().ToString();
+                switch (gameid)
+                {
+                    case "EsfSaveEditorControls.R2TW":
+                        string campaign_localisation = node.Children[0].Children[1].Values[0].ToString();
+                        if (campaign_localisation.Contains("roman"))
+                        {
+                            string armytype = getValue(GameInfo.save_item_cclass).Equals("army") ? "Legio" : "Classis";
+                            string romanindex = GameInfo.ToRoman(getIndex());
+                            campaign_localisation = GameData.GetInstance().DictionaryArmyRomanRegion[campaign_localisation];
+                            campaign_localisation = String.Format("{0} {1} {2}", armytype, romanindex, campaign_localisation);
+                        }
+                        return campaign_localisation;
+                    default:
+                        return node.Children[0].Children[1].Values[1].ToString();
+                }
             }
             protected override Dictionary<string, object> getSaveTableSignature()
             {
@@ -414,8 +439,7 @@ namespace EsfSaveEditorControls
                 Parallel.ForEach(node.Children, (armynode) =>
                 {
                     EsfLibrary.ParentNode militaryforce = armynode.Children[0];
-                    EsfLibrary.ParentNode militaryforcelegacy = armynode.Children[0].Children[0];
-                    string cclass = militaryforcelegacy.Values[0].ToString();
+                    string cclass = militaryforce.GetNodeByPath((string)GameInfo.setting.army_class).ToString();
                     if (cclass.Equals("0") || cclass.Equals("1"))
                     {
                         Add(new Army(militaryforce));

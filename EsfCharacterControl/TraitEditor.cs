@@ -58,10 +58,11 @@ namespace EsfSaveEditorControls
                 return;
             }
             filter = filter.ToLower();
-            if (GameInfo.item_characters.Contains(filter))
+            System.Collections.Specialized.StringCollection sc = GameInfo.setting.character_filter;
+            if (sc.Contains(filter))
             {
                 string inner_filter = "!agent";
-                if (filter == GameInfo.item_characters.First())
+                if (filter == sc[0])
                 {
                     if (!avaliable_traits_filter_strings.Contains(filter))
                     {
@@ -144,9 +145,14 @@ namespace EsfSaveEditorControls
             filter = filter.ToLower();
             if (!avaliable_traits_filter_strings.Contains(filter))
             {
-                if (GameInfo.item_characters.Contains(filter))
-                    foreach (string character in GameInfo.item_characters)
-                        avaliable_traits_filter_strings.Remove(character);
+                System.Collections.Specialized.StringCollection sc = GameInfo.setting.character_filter;
+                if (sc.Contains(filter))
+                    foreach (string type in sc)
+                        avaliable_traits_filter_strings.Remove(type);
+                sc = GameInfo.setting.army_filter;
+                if (sc.Contains(filter))
+                    foreach (string type in sc)
+                        avaliable_traits_filter_strings.Remove(type);
                 avaliable_traits_filter_strings.Add(filter);
                 onFilterChanged();
             }
