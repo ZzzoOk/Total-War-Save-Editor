@@ -46,10 +46,8 @@ namespace EsfSaveEditorControls
                 var path = getSaveTableSignature()[type];
                 if (path.ToString().Contains(GameInfo.setting_static_field_string))
                 {
-                    Type game_type = GameInfo.setting.GetType();
-                    path = game_type.GetProperty((path as string)
-                        .Replace(GameInfo.setting_static_field_string, ""))
-                        .GetValue(GameInfo.setting);
+                    path = GameInfo.GetSetting((path as string)
+                        .Replace(GameInfo.setting_static_field_string, ""));
                 }
                 var valueNode = getValueNode(path);
                 string result = processValue(get, type, valueNode.ToString());

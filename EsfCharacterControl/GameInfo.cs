@@ -121,17 +121,9 @@ namespace EsfSaveEditorControls
             if (number >= 1) return "I" + ToRoman(number - 1);
             throw new ArgumentOutOfRangeException("something bad happened");
         }
-        public static object FollowPropertyPath(object value, string path)
+        public static object GetSetting(string path)
         {
-            Type currentType = value.GetType();
-
-            foreach (string propertyName in path.Split('.'))
-            {
-                var property = currentType.GetProperty(propertyName);
-                value = property.GetValue(value, null);
-                currentType = property.PropertyType;
-            }
-            return value;
+            return setting.GetType().GetProperty(path).GetValue(setting);
         }
         public static EsfTabControl.BaseGameItemCollection getItemCollection(object item, string property)
         {

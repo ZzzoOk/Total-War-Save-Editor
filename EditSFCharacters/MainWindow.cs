@@ -48,7 +48,10 @@ namespace EditSFCharacters {
 
         private void promptOpenFile() {
             OpenFileDialog dialog = new OpenFileDialog {
-                RestoreDirectory = true
+                InitialDirectory = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                EsfSaveEditorControls.GameInfo.GetSetting("save_path") as string),
+                RestoreDirectory = false
             };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 try {
@@ -93,8 +96,12 @@ namespace EditSFCharacters {
             }
         }
         private void promptSaveFile() {
-            SaveFileDialog dialog = new SaveFileDialog {
-                RestoreDirectory = true
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                InitialDirectory = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                EsfSaveEditorControls.GameInfo.setting.GetSetting("save_path") as string),
+                RestoreDirectory = false
             };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 Save(dialog.FileName);

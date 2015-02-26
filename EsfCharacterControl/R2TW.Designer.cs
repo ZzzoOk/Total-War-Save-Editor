@@ -143,5 +143,17 @@ namespace EsfSaveEditorControls {
                 return ((string)(this["army_index"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("The Creative Assembly\\Rome2\\save_games")]
+        public string save_path {
+            get {
+                return ((string)(this["save_path"]));
+            }
+            set {
+                this["save_path"] = value;
+            }
+        }
     }
 }
