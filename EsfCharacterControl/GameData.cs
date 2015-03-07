@@ -207,19 +207,17 @@ namespace EsfSaveEditorControls
             }
             protected virtual void Add(GameItemsWithEffects item)
             {
-                list.Add(new GameItemsWithEffects());
+                list.Add(item);
             }
             protected void addRank(int level){
                 lock (list)
                     while (list.Count <= level)
                     {
-                        Add(new GameItemsWithEffects());
+                        Add(new GameItemsWithEffects() { name = this.name });
                     }
             }
             public void addEffect(int rank, string effectid, string value, string scope)
             {
-                if (rank > 0)
-                    --rank;
                 addRank(rank);
                 GameItemsWithEffects item = list[rank];
                 item.addEffect(effectid, value, scope);
@@ -228,9 +226,9 @@ namespace EsfSaveEditorControls
             {
                 get
                 {
-                    if (rank > 0 && rank <= list.Count)
+                    if (rank >= 0 && rank < list.Count)
                     {
-                        return list[rank - 1];
+                        return list[rank];
                     }
                     return (new GameItemsWithEffects() { name = this.name });
                 }
@@ -412,7 +410,7 @@ namespace EsfSaveEditorControls
             {
                 for (int i = ranks.Count - 1; i >= 0; --i)
                     if (rank >= ranks[i])
-                        return i + 1;
+                        return i;
                 return 0;
             }
             protected override void Add(GameItemsWithEffects item)
@@ -422,7 +420,6 @@ namespace EsfSaveEditorControls
             }
             public void addRank(int level, int rank, string key, List<Effect> effects)
             {
-                level = level > 0 ? level - 1 : level;
                 addRank(level);
                 ranks[level] = rank;
                 var trait = base[level];
