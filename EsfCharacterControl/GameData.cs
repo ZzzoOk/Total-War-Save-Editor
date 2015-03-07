@@ -200,7 +200,7 @@ namespace EsfSaveEditorControls
         }
         public class RankedGameItem : GenericGameItem
         {
-            protected List<GameItemsWithEffects> list = new List<GameItemsWithEffects>(3);
+            List<GameItemsWithEffects> list = new List<GameItemsWithEffects>(3);
             public IEnumerator<GameItemsWithEffects> GetEnumerator()
             {
                 return list.GetEnumerator();
@@ -232,7 +232,7 @@ namespace EsfSaveEditorControls
                     {
                         return list[rank - 1];
                     }
-                    return (new GameItemsWithEffects());
+                    return (new GameItemsWithEffects() { name = this.name });
                 }
                 set
                 {
@@ -425,7 +425,7 @@ namespace EsfSaveEditorControls
                 level = level > 0 ? level - 1 : level;
                 addRank(level);
                 ranks[level] = rank;
-                var trait = list[level];
+                var trait = base[level];
                 trait.name = key;
                 trait.addEffects(effects);
             }
@@ -433,7 +433,7 @@ namespace EsfSaveEditorControls
                 get
                 {
                     var level = getRank(rank);
-                    return level >= 0 ? list[level] : new GameItemsWithEffects();
+                    return base[level];
                 }
                 set
                 {
