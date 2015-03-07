@@ -412,8 +412,8 @@ namespace EsfSaveEditorControls
             {
                 for (int i = ranks.Count - 1; i >= 0; --i)
                     if (rank >= ranks[i])
-                        return i;
-                return -1;
+                        return i + 1;
+                return 0;
             }
             protected override void Add(GameItemsWithEffects item)
             {
