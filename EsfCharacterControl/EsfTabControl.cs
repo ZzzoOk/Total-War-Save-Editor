@@ -219,6 +219,8 @@ namespace EsfSaveEditorControls
                     case GameInfo.save_item_cclass:
                         if (value == "general")
                             return getValue(GameInfo.save_item_gender).Equals("True") ? value : "wife";
+                        else if (value == "dignitary")
+                            return "priest";
                         break;
                     case GameInfo.save_item_age:
                         if (set)
