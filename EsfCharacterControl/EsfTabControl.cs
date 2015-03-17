@@ -214,22 +214,11 @@ namespace EsfSaveEditorControls
             }
             protected override string processValue(bool set, string type, string value)
             {
-                switch (type)
-                {
-                    case GameInfo.save_item_cclass:
-                        if (value == "general")
-                            return getValue(GameInfo.save_item_gender).Equals("True") ? value : "wife";
-                        else if (value == "dignitary")
-                            return "priest";
-                        break;
-                    case GameInfo.save_item_age:
-                        if (set)
-                            return (gameYear - int.Parse(value)).ToString();
-                        else
-                            return (gameYear - int.Parse(value)).ToString();
-                    default:
-                        break;
-                }
+                if (object.ReferenceEquals(type, GameInfo.save_item_age))
+                    if (set)
+                        return (gameYear - int.Parse(value)).ToString();
+                    else
+                        return (gameYear - int.Parse(value)).ToString();
                 return value;
             }
             public override void save(Dictionary<string, string> bundle)
@@ -243,6 +232,21 @@ namespace EsfSaveEditorControls
                     if (skill.isBackground())
                         return skill.getKey();
                 return null;
+            }
+        }
+        public class ATWCharacter : Character
+        {
+            public ATWCharacter(EsfLibrary.ParentNode charnode)
+                : base(charnode){}
+            protected override string processValue(bool set, string type, string value)
+            {
+                if (object.ReferenceEquals(type, GameInfo.save_item_cclass))
+                    if (Object.ReferenceEquals(GameInfo.setting.GetType(), typeof(ATW)))
+                        if (value == "general")
+                            return getValue(GameInfo.save_item_gender).Equals("True") ? value : "wife";
+                        else if (value == "dignitary")
+                            return "priest";
+                return base.processValue(set, type, value);
             }
         }
         public class Trait : BaseGameItem
@@ -332,7 +336,7 @@ namespace EsfSaveEditorControls
                 { GameInfo.save_item_level, GameInfo.armylevelpath + @"\4" }, 
                 { GameInfo.save_item_exp, GameInfo.armylevelpath + @"\6" },
                 { GameInfo.save_item_cclass, "GameInfo.setting.army_class" }, 
-                { "index", "GameInfo.setting.army_index" }
+                { GameInfo.save_item_index, "GameInfo.setting.army_index" }
             };
             public BaseGameItemCollection skills { get; set; }
             public BaseGameItemCollection units { get; set; }
@@ -428,13 +432,25 @@ namespace EsfSaveEditorControls
             public Characters(EsfLibrary.ParentNode node) : base(node) { }
             protected override void initialise(Type type)
             {
+                Action new_character;
+
+                switch (GameInfo.GetGameVersion())
+                {
+                    case "ATW":
+                        new_character = new Action(()=>Add(new ATWCharacter(node)));
+                        break;
+                    default:
+                        new_character = new Action(() => Add(new Character(node)));
+                        break;
+                }
+
                 Parallel.ForEach(node.Children, (characternode) =>
                 {
                     EsfLibrary.ParentNode chardetailsnode = characternode.Children[0].Children[1];
                     string cclass = chardetailsnode.Values[GameInfo.setting.character_class_path].ToString();
                     if (cclass != "colonel")
                     {
-                        Add(new Character(chardetailsnode));
+                        new_character.Invoke();
                     }
                 });
             }

@@ -67,10 +67,15 @@ namespace EsfSaveEditorControls
         public const string save_item_max_size = "max_size";
         public const string save_item_action = "action";
         public const string save_item_max_action = "max_action";
+        public const string save_item_index = "index";
         public const string setting_static_field_string = "GameInfo.setting.";
         public static readonly List<string> dataPacks = new List<string>();
         public static readonly List<string> locDataPacks = new List<string>();
 
+        public static string GetGameVersion()
+        {
+            return setting.GetType().ToString();
+        }
         public static void SetGame(string gameid)
         {
             var type = Type.GetType("EsfSaveEditorControls." + gameid);
