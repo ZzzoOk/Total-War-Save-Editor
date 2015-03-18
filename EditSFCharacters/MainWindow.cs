@@ -257,12 +257,7 @@ namespace EditSFCharacters {
                     EsfSaveEditorControls.GameData.Invalidate();
 
                     this.menuStrip1.Enabled = false;
-
-                    var refreshDB = 
-                        System.Threading.Tasks.Task.Run(() => EsfSaveEditorControls.GameData.Initialise(updater));
-
-                    refreshDB.ContinueWith(x=>InitEditor(), System.Threading.Tasks.TaskScheduler.
-                        FromCurrentSynchronizationContext());
+                    initData();
                 }
             }
             else
@@ -272,9 +267,12 @@ namespace EditSFCharacters {
         {
             switchGame((sender as ToolStripMenuItem).Tag.ToString());
         }
-        async void switchGame(string gameid)
+        void switchGame(string gameid)
         {
             string oldid = Properties.Settings.Default.gameid;
+            Properties.Settings.Default.Save();
+            foreach (ToolStripMenuItem menuitem in gameToolStripMenuItem.DropDownItems)
+                menuitem.Checked = gameid.Equals(menuitem.Tag.ToString());
             Properties.Settings.Default.gameid = gameid;
             fileToolStripMenuItem.Enabled = false;
             chooseDatapackToLoadToolStripMenuItem.Enabled = false;
@@ -283,21 +281,23 @@ namespace EditSFCharacters {
             EsfSaveEditorControls.GameInfo.LoadDataPacks();
             if (promptGameDir())
             {
-                menuStrip1.Enabled = false;
-                await System.Threading.Tasks.Task.Run(() => EsfSaveEditorControls.GameData.Initialise(updater));
-
-                if (InitEditor())
-                {
-                    fileToolStripMenuItem.Enabled = true;
-                    chooseDatapackToLoadToolStripMenuItem.Enabled = true;
-                    chooseLocDatabaseToLoadToolStripMenuItem.Enabled = true;
-                    Properties.Settings.Default.Save();
-                    foreach (ToolStripMenuItem menuitem in gameToolStripMenuItem.DropDownItems)
-                        menuitem.Checked = gameid.Equals(menuitem.Tag.ToString());
-                    return;
-                }
+                initData();
             }
-            Properties.Settings.Default.gameid = oldid;
+        }
+        async void initData()
+        {
+            menuStrip1.Enabled = false;
+            chooseDatapackToLoadToolStripMenuItem.Enabled = true;
+            chooseLocDatabaseToLoadToolStripMenuItem.Enabled = true;
+            await System.Threading.Tasks.Task.Run(() => EsfSaveEditorControls.GameData.Initialise(updater));
+
+            if (InitEditor())
+            {
+                fileToolStripMenuItem.Enabled = true;
+                return;
+            }
+            else
+                MessageBox.Show("Error with loading database");
         }
     }
 
