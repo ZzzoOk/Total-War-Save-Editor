@@ -250,6 +250,10 @@ namespace EsfSaveEditorControls
                         Console.WriteLine(String.Format("Key {0} not found. Try loading some mod packs.", key));
                     return null;
                 }
+                set
+                {
+                    base[key] = value;
+                }
             }
             public abstract void Initialise(params VirtualDirectory[] db);
             public virtual void Localise(IReadOnlyDictionary<string, string> dict)
@@ -672,7 +676,7 @@ namespace EsfSaveEditorControls
                         values.Add(land_unit["ammo"].Value);
                         values.Add(land_unit["reload"].Value);
                     }
-                    land_units.Add(landUnit, values);
+                    land_units[landUnit] = values;
                 }, GameInfo.land_units_tables, db);
                 iterateDBs(main_unit =>
                 {
@@ -687,7 +691,7 @@ namespace EsfSaveEditorControls
                     bool found = land_units.TryGetValue(landUnit, out stats);
                     if (found)
                         armyUnit.values = stats;
-                    this.Add(key, armyUnit);
+                    this[key] = armyUnit;
                 }, GameInfo.main_units_tables, db);
             }
         }

@@ -432,15 +432,17 @@ namespace EsfSaveEditorControls
             public Characters(EsfLibrary.ParentNode node) : base(node) { }
             protected override void initialise(Type type)
             {
-                Action new_character;
+                Action<EsfLibrary.ParentNode> new_character;
 
                 switch (GameInfo.GetGameVersion())
                 {
                     case "ATW":
-                        new_character = new Action(()=>Add(new ATWCharacter(node)));
+                        new_character = new Action<EsfLibrary.ParentNode>((chardetailsnode)=>
+                            Add(new ATWCharacter(chardetailsnode)));
                         break;
                     default:
-                        new_character = new Action(() => Add(new Character(node)));
+                        new_character = new Action<EsfLibrary.ParentNode>((chardetailsnode)
+                            =>Add(new Character(chardetailsnode)));
                         break;
                 }
 
@@ -450,7 +452,7 @@ namespace EsfSaveEditorControls
                     string cclass = chardetailsnode.Values[GameInfo.setting.character_class_path].ToString();
                     if (cclass != "colonel")
                     {
-                        new_character.Invoke();
+                        new_character.Invoke(chardetailsnode);
                     }
                 });
             }
